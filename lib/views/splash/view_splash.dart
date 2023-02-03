@@ -20,8 +20,9 @@ class ViewSplash extends StatelessWidget {
           )
         ),
         child: const Text(
-          "Finance",
+          "finance",
           style: TextStyle(
+            fontFamily: "Inter",
             fontSize: 50.0,
             fontWeight: FontWeight.w700,
             color: Colors.white
