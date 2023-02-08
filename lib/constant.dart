@@ -11,6 +11,7 @@ class Constant {
   static const Color colorLinear2 = Color(0xFF438883);
 
   //IMAGES
-  static const String assetImageSplash = "assets/images/image-finance.png";
+  static const String assetImageFinance = "assets/images/image-finance.png";
+  static const String assetImageSign = "assets/images/sign.png";
 
 }

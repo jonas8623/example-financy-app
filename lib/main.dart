@@ -16,8 +16,20 @@ class MyApp extends StatelessWidget {
       title: 'Finance',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        primaryColor: const Color(0xFF438883),
+        inputDecorationTheme: const InputDecorationTheme(
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFF438883))
+          ),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF438883))
+          ),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFF438883))
+          ),
+        )
       ),
-      home: const ViewSplash()
+      home: const ViewSignUp()
     );
   }
 }
