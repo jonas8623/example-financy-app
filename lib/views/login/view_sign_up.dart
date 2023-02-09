@@ -1,9 +1,11 @@
 import 'dart:developer';
+import 'package:example_financy/bloc/bloc.dart';
 import 'package:example_financy/components/components.dart';
 import 'package:example_financy/constant.dart';
-import 'package:example_financy/validator/validator.dart';
+import 'package:example_financy/views/views.dart';
 import 'package:example_financy/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ViewSignUp extends StatefulWidget {
   const ViewSignUp({Key? key}) : super(key: key);
@@ -12,7 +14,7 @@ class ViewSignUp extends StatefulWidget {
   State<ViewSignUp> createState() => _ViewSignUpState();
 }
 
-class _ViewSignUpState extends State<ViewSignUp> with Validator {
+class _ViewSignUpState extends State<ViewSignUp> {
 
   late final GlobalKey<FormState> _formKey;
   late final TextEditingController _nameController;
@@ -35,14 +37,30 @@ class _ViewSignUpState extends State<ViewSignUp> with Validator {
                   controller: _nameController,
                   textCapitalization: TextCapitalization.words,
                   keyboard: TextInputType.name,
-                  validator: (value) => validatorName(value)
+                  validator: (value) {
+
+                    _nameController.text = value!;
+
+                    if(_nameController.text.isEmpty) {
+                      return "O campo não pode ser nulo";
+                    }
+                    return null;
+                  }
               ),
               _sizedBox(),
               ComponentTextFormField(
                   labelText: "Your Email",
                   controller: _emailController,
                   keyboard: TextInputType.emailAddress,
-                  validator: (value) => validatorEmail(value)
+                  validator: (value) {
+
+                    _emailController.text = value!;
+
+                    if(_emailController.text.isEmpty) {
+                      return "O campo não pode ser nulo";
+                    }
+                    return null;
+                  }
               ),
               _sizedBox(),
               ComponentTextFormField(
@@ -53,10 +71,10 @@ class _ViewSignUpState extends State<ViewSignUp> with Validator {
                   validator: (value) {
                     _passwordController.text = value!;
 
-                    if(_passwordController.text != null && _passwordController.text.isEmpty) {
+                    if(_passwordController.text.isEmpty) {
                       return "O campo não pode ser nulo";
 
-                    } else if(_passwordController.text != null && _passwordController.text.length <= 4) {
+                    } else if(_passwordController.text.length <= 4) {
                       return "O campo está incorreto";
 
                     }
@@ -84,6 +102,28 @@ class _ViewSignUpState extends State<ViewSignUp> with Validator {
         ));
   }
 
+  Widget _body(SignUpBloc bloc) {
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _sizedBox(height: 10.0),
+              const ComponentText(text: "Spend Smarter"),
+              const ComponentText(text: "Save More"),
+              Image.asset(Constant.assetImageSign),
+              _form(),
+              _sizedBox(height: 10.0),
+              ComponentButton(onTap: () => _registerForm(bloc), text: "Sign Up"),
+              WidgetTextButton(text: "Log in", onPressed: () {})
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     _formKey = GlobalKey<FormState>();
@@ -105,32 +145,51 @@ class _ViewSignUpState extends State<ViewSignUp> with Validator {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 10.0,),
-              const ComponentText(text: "Spend Smarter"),
-              const ComponentText(text: "Save More"),
-              Image.asset(Constant.assetImageSign),
-             _form(),
-              const SizedBox(height: 10.0,),
-              ComponentButton(onTap: () => _registerForm(), text: "Sign Up"),
-              WidgetTextButton(text: "Log in", onPressed: () {})
-            ],
-          ),
-        ),
-      ),
+
+    final bloc = BlocProvider.of<SignUpBloc>(context);
+
+    return BlocConsumer(
+        bloc: bloc,
+        listener: (context, state) {
+           if(state is SignUpErrorState) {
+            _message(message: state.message, checkMessage: 2);
+          }
+        },
+        builder: (context, state) {
+          if(state is SignUpLoadingState) {
+            return const Scaffold(body: Center(child: CircularProgressIndicator(),),);
+
+          } else if(state is SignUpSuccessState) {
+            return const ViewSplash();
+
+          }
+          return _body(bloc);
+        }
     );
   }
 
-  void _registerForm() {
+  void _registerForm(SignUpBloc bloc) {
 
     if(_formKey.currentState!.validate()) {
-      log('OK');
 
+      bloc.add(SignUpRequiredEvent(
+          name: _nameController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
+          confirmPassword: _confirmPasswordController.text));
+
+      log("NAME: ${_nameController.text}");
+      log("EMAIL ${_emailController.text}");
+      log("PASSWORD ${_passwordController.text}");
+      log("CONFIRM ${_confirmPasswordController.text}");
     }
+  }
+
+  void _message({required String message, int checkMessage = 1}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(message),
+            backgroundColor: checkMessage != 1 ? Colors.redAccent : Theme.of(context).primaryColor,
+        ));
   }
 }

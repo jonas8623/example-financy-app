@@ -67,7 +67,8 @@ class _ComponentTextFormFieldState extends State<ComponentTextFormField> {
         helperMaxLines: 3,
         enabledBorder: _outlineBorder,
         focusedBorder: _outlineBorder,
-        errorBorder: _outlineBorder,
+        // errorBorder: _outlineBorder,
+        border: _outlineBorder,
         suffixIcon: widget.password!
             ? IconButton(
                 onPressed: () {

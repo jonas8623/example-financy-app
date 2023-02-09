@@ -2,6 +2,10 @@ import 'package:example_financy/components/components.dart';
 import 'package:example_financy/constant.dart';
 import 'package:example_financy/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../bloc/bloc.dart';
+import '../views.dart';
 
 class ViewOnBoarding extends StatelessWidget {
   const ViewOnBoarding({Key? key}) : super(key: key);
@@ -28,14 +32,13 @@ class ViewOnBoarding extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _body(SignUpBloc bloc) {
     return Scaffold(
       body: Column(
         children: [
           _expanded(
-              color: const Color(0xFFEEF8F7),
-              child: Image.asset(Constant.assetImageFinance),
+            color: const Color(0xFFEEF8F7),
+            child: Image.asset(Constant.assetImageFinance),
           ),
           _expanded(
               color: Colors.white,
@@ -47,7 +50,7 @@ class ViewOnBoarding extends StatelessWidget {
                     children: [
                       _text(text: "Spend Smarter"),
                       _text(text: "Save More"),
-                      ComponentButton(onTap: () {}, text: "Get Started"),
+                      ComponentButton(onTap: () => bloc.add(SignUpInitialViewEvent()), text: "Get Started"),
                       WidgetTextButton(text: "Log In", onPressed: () {})
                     ],
                   ),
@@ -58,4 +61,20 @@ class ViewOnBoarding extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<SignUpBloc>(context);
+    return BlocBuilder<SignUpBloc, SignUpState>(
+        bloc: bloc,
+        builder: (context, state) {
+          if(state is SignUpViewRegisterState) {
+            return const ViewSignUp();
+          }
+
+          return _body(bloc);
+        }
+    );
+  }
 }
+
