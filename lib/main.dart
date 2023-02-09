@@ -1,24 +1,18 @@
-import 'package:example_financy/views/views.dart';
+import 'package:example_financy/bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'my_app.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(
+        providers: [
+          BlocProvider<SignUpBloc>(create: (context) => SignUpBloc())
+        ],
+        child: const MyApp())
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Finance',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const ViewSplash()
-    );
-  }
-}
 
