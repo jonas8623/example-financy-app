@@ -1,5 +1,4 @@
 import 'package:example_financy/bloc/bloc.dart';
-import 'package:example_financy/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,7 +11,7 @@ class ViewHome extends StatefulWidget {
 
 class _ViewHomeState extends State<ViewHome> {
 
-  late final UserModel userModel;
+  // late final UserModel userModel;
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +23,12 @@ class _ViewHomeState extends State<ViewHome> {
         builder: (context, state) {
 
         if(state is Authenticated) {
-          userModel = state.userModel;
+          // userModel = state.userModel;
         }
 
-      return Scaffold(
+      return const Scaffold(
         body: Center(
-          child: Text("User Authenticated: ${userModel.name}"),),);
-
+          child: Text("User Authenticated: "),),);
         }
     );
   }

@@ -4,9 +4,19 @@ import 'package:example_financy/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/bloc.dart';
+import '../../models/models.dart';
+import '../views.dart';
 
-class ViewOnBoarding extends StatelessWidget {
+class ViewOnBoarding extends StatefulWidget {
   const ViewOnBoarding({Key? key}) : super(key: key);
+
+  @override
+  State<ViewOnBoarding> createState() => _ViewOnBoardingState();
+}
+
+class _ViewOnBoardingState extends State<ViewOnBoarding> {
+
+  late final UserModel userModel;
 
   Widget _expanded({int? flex, required Color color, Widget? child}) {
     return Expanded(
@@ -61,11 +71,45 @@ class ViewOnBoarding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final bloc = BlocProvider.of<AuthBloc>(context);
-    return BlocBuilder<AuthBloc, AuthState>(
+
+    return BlocConsumer<AuthBloc, AuthState>(
         bloc: bloc,
-        builder: (context, state) => _body(bloc),
+        listener: (context, state) {
+          if(state is AuthErrorState) {
+            _message(message: state.errorMessage, checkMessage: 2);
+          }
+        },
+        builder: (context, state) {
+
+          if(state is Authenticated) {
+            userModel = state.userModel;
+            return const ViewHome();
+
+          } else if(state is AuthLoadingState) {
+            return const Scaffold(
+                body: Center(child: CircularProgressIndicator()));
+
+          } else if(state is SignInViewState) {
+            return const ViewSignIn();
+
+          } else if(state is SignUpViewState) {
+            return const ViewSignUp();
+
+          }
+
+          return _body(bloc);
+        }
     );
+  }
+
+  void _message({required String message, int checkMessage = 1}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(message),
+          backgroundColor: checkMessage != 1 ? Colors.redAccent : Theme.of(context).primaryColor,
+        ));
   }
 }
 
