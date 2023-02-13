@@ -1,8 +1,6 @@
-import 'dart:developer';
 import 'package:example_financy/bloc/bloc.dart';
 import 'package:example_financy/components/components.dart';
 import 'package:example_financy/constant.dart';
-import 'package:example_financy/views/views.dart';
 import 'package:example_financy/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -102,7 +100,7 @@ class _ViewSignUpState extends State<ViewSignUp> {
         ));
   }
 
-  Widget _body(SignUpBloc bloc) {
+  Widget _body(AuthBloc bloc) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -112,11 +110,11 @@ class _ViewSignUpState extends State<ViewSignUp> {
               _sizedBox(height: 10.0),
               const ComponentText(text: "Spend Smarter"),
               const ComponentText(text: "Save More"),
-              Image.asset(Constant.assetImageSign),
+              Image.asset(Constant.assetImageSignUp),
               _form(),
               _sizedBox(height: 10.0),
               ComponentButton(onTap: () => _registerForm(bloc), text: "Sign Up"),
-              WidgetTextButton(text: "Log in", onPressed: () {})
+              WidgetTextButton(title: "Access Your Account" ,textButton: "Sign in", onPressed: () => bloc.add(SignInViewEvent()))
             ],
           ),
         ),
@@ -143,53 +141,60 @@ class _ViewSignUpState extends State<ViewSignUp> {
     super.dispose();
   }
 
+  // @override
+  // Widget build(BuildContext context) {
+  //
+  //   final bloc = BlocProvider.of<AuthBloc>(context);
+  //
+  //   return BlocConsumer(
+  //       bloc: bloc,
+  //       listener: (context, state) {
+  //          if(state is SignUpErrorState) {
+  //           _message(message: state.message, checkMessage: 2);
+  //         }
+  //       },
+  //       builder: (context, state) {
+  //         if(state is SignUpLoadingState) {
+  //           return const Scaffold(body: Center(child: CircularProgressIndicator(),),);
+  //
+  //         } else if(state is SignUpSuccessState) {
+  //           return const ViewSplash();
+  //
+  //         }
+  //         return _body(bloc);
+  //       }
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
 
-    final bloc = BlocProvider.of<SignUpBloc>(context);
+    final bloc = BlocProvider.of<AuthBloc>(context);
 
-    return BlocConsumer(
+    return BlocBuilder(
         bloc: bloc,
-        listener: (context, state) {
-           if(state is SignUpErrorState) {
-            _message(message: state.message, checkMessage: 2);
-          }
-        },
         builder: (context, state) {
-          if(state is SignUpLoadingState) {
-            return const Scaffold(body: Center(child: CircularProgressIndicator(),),);
-
-          } else if(state is SignUpSuccessState) {
-            return const ViewSplash();
-
-          }
+          // if(state is SignUpLoadingState) {
+          //   return const Scaffold(body: Center(child: CircularProgressIndicator(),),);
+          //
+          // } else if(state is SignUpSuccessState) {
+          //   return const ViewSplash();
+          //
+          // }
           return _body(bloc);
         }
     );
   }
 
-  void _registerForm(SignUpBloc bloc) {
+  void _registerForm(AuthBloc bloc) {
 
     if(_formKey.currentState!.validate()) {
 
-      bloc.add(SignUpRequiredEvent(
+      bloc.add(SignUpRequestedEvent(
           name: _nameController.text,
           email: _emailController.text,
           password: _passwordController.text,
-          confirmPassword: _confirmPasswordController.text));
-
-      log("NAME: ${_nameController.text}");
-      log("EMAIL ${_emailController.text}");
-      log("PASSWORD ${_passwordController.text}");
-      log("CONFIRM ${_confirmPasswordController.text}");
+      ));
     }
-  }
-
-  void _message({required String message, int checkMessage = 1}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(message),
-            backgroundColor: checkMessage != 1 ? Colors.redAccent : Theme.of(context).primaryColor,
-        ));
   }
 }

@@ -3,9 +3,7 @@ import 'package:example_financy/constant.dart';
 import 'package:example_financy/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../bloc/bloc.dart';
-import '../views.dart';
 
 class ViewOnBoarding extends StatelessWidget {
   const ViewOnBoarding({Key? key}) : super(key: key);
@@ -32,26 +30,25 @@ class ViewOnBoarding extends StatelessWidget {
     );
   }
 
-  Widget _body(SignUpBloc bloc) {
+  Widget _body(AuthBloc bloc) {
     return Scaffold(
       body: Column(
         children: [
           _expanded(
             color: const Color(0xFFEEF8F7),
-            child: Image.asset(Constant.assetImageFinance),
-          ),
+            child: Image.asset(Constant.assetImageFinance)),
           _expanded(
               color: Colors.white,
               flex: 1,
               child: Align(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Column(
                     children: [
                       _text(text: "Spend Smarter"),
                       _text(text: "Save More"),
-                      ComponentButton(onTap: () => bloc.add(SignUpInitialViewEvent()), text: "Get Started"),
-                      WidgetTextButton(text: "Log In", onPressed: () {})
+                      ComponentButton(onTap: () => bloc.add(SignInViewEvent()), text: "Get Started"),
+                      WidgetTextButton(title: "Already Have Account?", textButton: "Sign Up", onPressed: () => bloc.add(SignUpViewEvent()))
                     ],
                   ),
                 ),
@@ -64,16 +61,10 @@ class ViewOnBoarding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<SignUpBloc>(context);
-    return BlocBuilder<SignUpBloc, SignUpState>(
+    final bloc = BlocProvider.of<AuthBloc>(context);
+    return BlocBuilder<AuthBloc, AuthState>(
         bloc: bloc,
-        builder: (context, state) {
-          if(state is SignUpViewRegisterState) {
-            return const ViewSignUp();
-          }
-
-          return _body(bloc);
-        }
+        builder: (context, state) => _body(bloc),
     );
   }
 }

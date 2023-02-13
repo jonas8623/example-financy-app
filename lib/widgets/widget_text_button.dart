@@ -3,20 +3,21 @@ import 'package:flutter/material.dart';
 class WidgetTextButton extends StatelessWidget {
 
   final GestureTapCallback onPressed;
-  final String text;
+  final String title;
+  final String textButton;
 
-  const WidgetTextButton({Key? key, required this.text, required this.onPressed}) : super(key: key);
+  const WidgetTextButton({Key? key, required this.title, required this.textButton, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Already have account?"),
+        Text(title),
         TextButton(
             onPressed: onPressed,
             child: Text(
-              text,
+              textButton,
               style: const TextStyle(
                   fontFamily: "Inter",
                   fontSize: 14.0,
