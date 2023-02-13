@@ -12,6 +12,7 @@ class Constant {
 
   //IMAGES
   static const String assetImageFinance = "assets/images/image-finance.png";
-  static const String assetImageSign = "assets/images/sign.png";
+  static const String assetImageSignUp = "assets/images/sign.png";
+  static const String assetImageSignIn = "assets/images/sign_in.jpeg";
 
 }
