@@ -1,8 +1,5 @@
 import 'package:example_financy/home/my_home.dart';
-import 'package:example_financy/views/views.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bloc/bloc.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});

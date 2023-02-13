@@ -26,9 +26,9 @@ class _ViewSplashState extends State<ViewSplash> {
   @override
   Widget build(BuildContext context) {
 
-    final bloc = BlocProvider.of<SignUpBloc>(context);
+    final bloc = BlocProvider.of<AuthBloc>(context);
 
-    return BlocBuilder<SignUpBloc, SignUpState>(
+    return BlocBuilder<AuthBloc, AuthState>(
         bloc: bloc,
         builder: (context, state) {
           return Scaffold(
@@ -45,7 +45,7 @@ class _ViewSplashState extends State<ViewSplash> {
                   )
               ),
               child: const Text(
-                "finance",
+                "Finance",
                 style: TextStyle(
                     fontFamily: "Inter",
                     fontSize: 50.0,

@@ -1,6 +1,6 @@
 import 'package:example_financy/bloc/bloc.dart';
+import 'package:example_financy/services/secure_storage_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../services/services.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -8,6 +8,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthServiceHelper authServiceHelper;
 
   AuthBloc({required this.authServiceHelper}) : super(UnAuthenticated()) {
+
 
     on<SignInRequestedEvent>((event, emit) => _signIn(event, emit));
     on<SignUpRequestedEvent>((event, emit) => _signUp(event, emit));
@@ -39,6 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
 
     try {
+      const secureStorage = SecureStorageService();
       final user = await authServiceHelper.signUp(
           name: event.name,
           email: event.email,
@@ -46,6 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
 
       if(user != null) {
+        await secureStorage.write(key: "CURRENT_USER", value: user.toJson());
         emit(Authenticated(userModel: user));
       } else {
         emit(AuthErrorState(errorMessage: "Ops, aconteceu algum erro ao se cadastrar"));
@@ -66,8 +69,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch(error) {
       emit(AuthErrorState(errorMessage: "Ops aconteceu algo ao sair: $error"));
     }
-
   }
-
-
 }

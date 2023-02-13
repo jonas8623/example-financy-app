@@ -1,5 +1,6 @@
 import 'package:example_financy/bloc/bloc.dart';
 import 'package:example_financy/firebase_options.dart';
+import 'package:example_financy/services/secure_storage_service.dart';
 import 'package:example_financy/services/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,11 @@ void main() async {
       create: (context) => AuthServiceImplement(),
       child: MultiBlocProvider(
           providers: [
-            BlocProvider<AuthBloc>(create: (context) => AuthBloc(authServiceHelper: AuthServiceImplement()))
+            BlocProvider<StorageBloc>(
+                create: (context) => StorageBloc(const SecureStorageService())..add(StorageInitialEvent())),
+            BlocProvider<AuthBloc>(
+                create: (context) => AuthBloc(
+                    authServiceHelper: AuthServiceImplement()))
           ],
           child: const MyApp()),
     )
