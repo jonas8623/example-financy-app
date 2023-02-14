@@ -12,7 +12,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<SignInRequestedEvent>((event, emit) => _signIn(event, emit));
     on<SignUpRequestedEvent>((event, emit) => _signUp(event, emit));
-    // on<SignOut>((event, emit) => _signOut(event, emit));
+    on<SignOutEvent>((event, emit) => _signOut(event, emit));
     on<SignInViewEvent>((event, emit) => emit(SignInViewState()));
     on<SignUpViewEvent>((event, emit) => emit(SignUpViewState()));
   }
@@ -61,7 +61,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _signOut(SignOut event, Emitter<AuthState> emit) async {
+  Future<void> _signOut(SignOutEvent event, Emitter<AuthState> emit) async {
 
     emit(AuthLoadingState());
 

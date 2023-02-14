@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/bloc.dart';
@@ -20,6 +22,8 @@ class _MyHomeState extends State<MyHome> {
     return BlocBuilder<AppStartedBloc, AppStartedState>(
         bloc: bloc,
         builder: (context, state) {
+
+          log('${state.toString()} STORAGE');
 
           if(state is AppSuccessState) {
             // userModel = state.userModel;

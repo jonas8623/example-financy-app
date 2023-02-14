@@ -21,22 +21,28 @@ class _ViewHomeState extends State<ViewHome> {
         bloc: bloc,
         builder: (context, state) {
 
-        if(state is Authenticated) {
-          // userModel = state.userModel;
-        }
+          if(state is Authenticated) {
+            // userModel = state.userModel;
+          }
 
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("User Authenticated:"),
-              ElevatedButton(
-                  onPressed: () {
-                   BlocProvider.of<AppStartedBloc>(context).add(SignOut());
-                  }, child: const Text("Logout"))
-            ],
-          ),),);
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("User Authenticated:"),
+                  ElevatedButton(
+                      onPressed: () {
+
+
+                        if(state is Authenticated) {
+                          bloc.add(SignOutEvent());
+                        } else {
+                          BlocProvider.of<AppStartedBloc>(context).add(SignOut());
+                        }
+                      }, child: const Text("Logout"))
+                ],
+              ),),);
         }
     );
   }
