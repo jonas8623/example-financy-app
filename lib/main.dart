@@ -15,8 +15,8 @@ void main() async {
       create: (context) => AuthServiceImplement(),
       child: MultiBlocProvider(
           providers: [
-            BlocProvider<StorageBloc>(
-                create: (context) => StorageBloc(const SecureStorageService())..add(StorageInitialEvent())),
+            BlocProvider<AppStartedBloc>(
+                create: (context) => AppStartedBloc(const SecureStorageService())..add(AppInitialEvent())),
             BlocProvider<AuthBloc>(
                 create: (context) => AuthBloc(
                     authServiceHelper: AuthServiceImplement()))

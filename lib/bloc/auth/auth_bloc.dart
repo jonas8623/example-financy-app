@@ -12,7 +12,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<SignInRequestedEvent>((event, emit) => _signIn(event, emit));
     on<SignUpRequestedEvent>((event, emit) => _signUp(event, emit));
-    on<SignOut>((event, emit) => _signOut(event, emit));
+    // on<SignOut>((event, emit) => _signOut(event, emit));
     on<SignInViewEvent>((event, emit) => emit(SignInViewState()));
     on<SignUpViewEvent>((event, emit) => emit(SignUpViewState()));
   }
@@ -22,9 +22,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
 
     try {
+      const secureStorage = SecureStorageService();
       final user = await authServiceHelper.signIn(email: event.email, password: event.password);
 
       if(user != null) {
+        await secureStorage.write(key: "CURRENT_USER", value: user.toJson());
         emit(Authenticated(userModel: user));
       } else {
         emit(AuthErrorState(errorMessage: "Ops, aconteceu algum erro ao se logar"));
@@ -65,7 +67,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     try {
       await authServiceHelper.signOut();
+      const secureStorage = SecureStorageService();
+      await secureStorage.deleteOne(key: "CURRENT_USER");
       emit(UnAuthenticated());
+      // emit.call(StorageInitialState());
     } catch(error) {
       emit(AuthErrorState(errorMessage: "Ops aconteceu algo ao sair: $error"));
     }

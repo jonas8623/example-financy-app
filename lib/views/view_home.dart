@@ -11,7 +11,6 @@ class ViewHome extends StatefulWidget {
 
 class _ViewHomeState extends State<ViewHome> {
 
-  // late final UserModel userModel;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +25,18 @@ class _ViewHomeState extends State<ViewHome> {
           // userModel = state.userModel;
         }
 
-      return const Scaffold(
+      return Scaffold(
         body: Center(
-          child: Text("User Authenticated: "),),);
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("User Authenticated:"),
+              ElevatedButton(
+                  onPressed: () {
+                   BlocProvider.of<AppStartedBloc>(context).add(SignOut());
+                  }, child: const Text("Logout"))
+            ],
+          ),),);
         }
     );
   }
