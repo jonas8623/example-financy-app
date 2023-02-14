@@ -24,7 +24,7 @@ class SignUpRequestedEvent extends AuthEvent {
   SignUpRequestedEvent({required this.name, required this.email, required this.password});
 }
 
-class SignOut extends AuthEvent {}
+// class SignOut extends AuthEvent {}
 
 class SignInViewEvent extends AuthEvent {}
 

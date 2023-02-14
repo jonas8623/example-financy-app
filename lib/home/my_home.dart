@@ -15,13 +15,13 @@ class _MyHomeState extends State<MyHome> {
   @override
   Widget build(BuildContext context) {
 
-    final bloc = BlocProvider.of<StorageBloc>(context);
+    final bloc = BlocProvider.of<AppStartedBloc>(context);
 
-    return BlocBuilder<StorageBloc, StorageState>(
+    return BlocBuilder<AppStartedBloc, AppStartedState>(
         bloc: bloc,
         builder: (context, state) {
 
-          if(state is StorageSuccessState) {
+          if(state is AppSuccessState) {
             // userModel = state.userModel;
             return const ViewHome();
 
