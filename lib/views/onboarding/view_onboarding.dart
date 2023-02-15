@@ -84,7 +84,7 @@ class _ViewOnBoardingState extends State<ViewOnBoarding> {
         builder: (context, state) {
 
           if(state is Authenticated) {
-            return const ViewHome();
+            return const View();
 
           } else if(state is AuthLoadingState) {
             return const Scaffold(
