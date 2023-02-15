@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:example_financy/components/components.dart';
 import 'package:example_financy/constant.dart';
 import 'package:example_financy/widgets/widgets.dart';
@@ -84,10 +83,7 @@ class _ViewOnBoardingState extends State<ViewOnBoarding> {
         },
         builder: (context, state) {
 
-          log('${state.toString()} Auth');
-
           if(state is Authenticated) {
-            // userModel = state.userModel;
             return const ViewHome();
 
           } else if(state is AuthLoadingState) {
@@ -111,7 +107,9 @@ class _ViewOnBoardingState extends State<ViewOnBoarding> {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: checkMessage != 1 ? Colors.redAccent : Theme.of(context).primaryColor,
+          backgroundColor: checkMessage != 1
+              ? Colors.redAccent
+              : Theme.of(context).primaryColor,
         ));
   }
 }

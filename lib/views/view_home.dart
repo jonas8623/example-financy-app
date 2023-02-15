@@ -22,7 +22,7 @@ class _ViewHomeState extends State<ViewHome> {
         builder: (context, state) {
 
           if(state is Authenticated) {
-            // userModel = state.userModel;
+
           }
 
           return Scaffold(

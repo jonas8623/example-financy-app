@@ -1,13 +1,14 @@
 import 'package:example_financy/bloc/bloc.dart';
 import 'package:example_financy/services/auth_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../services/secure_storage_service.dart';
+import '../../repositories/repositories.dart';
 
 class AppStartedBloc extends Bloc<AppStartedEvent, AppStartedState> {
 
-  final SecureStorageService storageService;
+  final SecureStorageRepository storage;
+  final AuthServiceHelper authServiceHelper;
 
-  AppStartedBloc(this.storageService) : super(AppInitialState()) {
+  AppStartedBloc(this.storage, this.authServiceHelper) : super(AppInitialState()) {
 
     on<AppInitialEvent>((event, emit) => _isUserLogged(event, emit));
     on<SignOut>((event, emit) => _logoutUser(event, emit));
@@ -19,7 +20,7 @@ class AppStartedBloc extends Bloc<AppStartedEvent, AppStartedState> {
     emit(Loading());
 
     try {
-      final result = await storageService.readOne(key: "CURRENT_USER");
+      final result = await storage.readOne(key: "CURRENT_USER");
 
       if(result != null) {
         emit(AppSuccessState());
@@ -38,8 +39,8 @@ class AppStartedBloc extends Bloc<AppStartedEvent, AppStartedState> {
 
     try {
 
-      await AuthServiceImplement().signOut();
-      await storageService.deleteOne(key: "CURRENT_USER");
+      await authServiceHelper.signOut();
+      await storage.deleteOne(key: "CURRENT_USER");
       emit(AppInitialState());
 
     } catch(error) {

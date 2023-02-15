@@ -1,8 +1,8 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class SecureStorageService {
+class SecureStorageRepository {
 
-  const SecureStorageService();
+  const SecureStorageRepository();
 
   final _secure = const FlutterSecureStorage();
 
@@ -25,4 +25,5 @@ class SecureStorageService {
   Future<void> deleteAll() async {
     await _secure.deleteAll();
   }
+
 }
