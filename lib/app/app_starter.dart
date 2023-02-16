@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/bloc.dart';
+import '../extensions/extensions.dart';
 import '../views/views.dart';
 
 class App extends StatefulWidget {
@@ -11,6 +12,12 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) => DeviceSizeData.init(context));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

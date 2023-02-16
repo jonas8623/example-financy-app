@@ -38,8 +38,8 @@ class _ViewSplashState extends State<ViewSplash> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Constant.colorLinear1,
-                        Constant.colorLinear2,
+                        Constant.color1,
+                        Constant.color2,
                       ]
                   )
               ),

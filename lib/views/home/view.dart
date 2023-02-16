@@ -1,7 +1,6 @@
 import 'package:example_financy/bloc/bloc.dart';
 import 'package:example_financy/constant.dart';
 import 'package:example_financy/models/models.dart';
-import 'package:example_financy/views/home/home.dart';
 import 'package:example_financy/views/views.dart';
 import 'package:example_financy/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +31,6 @@ class _ViewState extends State<View> {
     return BlocBuilder(
         bloc: bloc,
         builder: (context, state) {
-
-          // if(state is Authenticated) {
-          //
-          // }
-
           return Scaffold(
             body: PageView(
               physics: const NeverScrollableScrollPhysics(),
@@ -50,12 +44,12 @@ class _ViewState extends State<View> {
             ),
             floatingActionButton: FloatingActionButton(
                 onPressed: () {},
-                backgroundColor: Constant.colorLinear2,
+                backgroundColor: Constant.color2,
                 child: const Icon(Icons.add),
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: WidgetBottomAppBar(
-                selectedColor: Constant.colorLinear2,
+                selectedColor: Constant.color2,
                 children: [
                   BottomAppBarModel(
                     label: 'Home',

@@ -44,7 +44,7 @@ class _WidgetBottomAppBarState extends State<WidgetBottomAppBar> {
                             child: Icon(
                               currentItem ? item.firstIcon : item.secondIcon,
                               color: currentItem 
-                                  ? Constant.colorLinear2
+                                  ? Constant.color2
                                   : Colors.grey.shade300,
                               size: 30.0,
                             ),

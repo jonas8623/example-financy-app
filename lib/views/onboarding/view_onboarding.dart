@@ -1,5 +1,6 @@
 import 'package:example_financy/components/components.dart';
 import 'package:example_financy/constant.dart';
+import 'package:example_financy/extensions/size_extension.dart';
 import 'package:example_financy/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ class _ViewOnBoardingState extends State<ViewOnBoarding> {
         text,
         style: TextStyle(
           fontFamily: "Inter",
-          fontSize: fontSize ?? 36.0,
+          fontSize: fontSize ?? 36.getDeviceWidth,
           fontWeight: weight ?? FontWeight.w700,
           color: const Color(0xFF438883)
         ),
@@ -52,7 +53,7 @@ class _ViewOnBoardingState extends State<ViewOnBoarding> {
               flex: 1,
               child: Align(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  padding: EdgeInsets.symmetric(vertical: 16.getDeviceHeight),
                   child: Column(
                     children: [
                       _text(text: "Spend Smarter"),
