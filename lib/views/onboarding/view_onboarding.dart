@@ -46,9 +46,8 @@ class _ViewOnBoardingState extends State<ViewOnBoarding> {
         body: Center(child: CircularProgressIndicator()));
   }
 
-  Widget _body(AuthBloc bloc, NetworkConnectionBloc networkConnectionBloc) {
-    return BlocConsumer(
-        bloc: networkConnectionBloc,
+  Widget _body(AuthBloc bloc) {
+    return BlocConsumer<NetworkConnectionBloc, NetworkConnectionState>(
         listener: (context, state) {
           if(state is FailureNetworkConnectionState) {
             _failureNetwork(
@@ -103,6 +102,8 @@ class _ViewOnBoardingState extends State<ViewOnBoarding> {
         listener: (context, state) {
           if(state is AuthErrorState) {
             _message(message: state.errorMessage, checkMessage: 2);
+          } else if(state is Authenticated) {
+            _message(message: state.message);
           }
         },
         builder: (context, state) {
@@ -121,7 +122,7 @@ class _ViewOnBoardingState extends State<ViewOnBoarding> {
 
           }
 
-          return _body(authBloc, networkBloc);
+          return _body(authBloc);
         }
     );
   }

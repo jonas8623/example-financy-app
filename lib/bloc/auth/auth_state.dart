@@ -13,7 +13,8 @@ class AuthLoadingState extends AuthState {}
 class Authenticated extends AuthState {
 
   final UserModel userModel;
-  Authenticated({required this.userModel});
+  final String message;
+  Authenticated({required this.userModel, required this.message});
 }
 
 class UnAuthenticated extends AuthState {}
