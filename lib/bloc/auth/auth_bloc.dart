@@ -16,8 +16,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignInRequestedEvent>((event, emit) => _signIn(event, emit));
     on<SignUpRequestedEvent>((event, emit) => _signUp(event, emit));
     on<SignOutEvent>((event, emit) => _signOut(event, emit));
-    on<SignInViewEvent>((event, emit) => emit(SignInViewState()));
-    on<SignUpViewEvent>((event, emit) => emit(SignUpViewState()));
+    on<SignInViewEvent>((event, emit) => _navigateSignInView(event, emit));
+    on<SignUpViewEvent>((event, emit) => _navigateSignUpView(event, emit));
   }
 
   Future<void> _signIn(SignInRequestedEvent event, Emitter<AuthState> emit) async {
@@ -32,12 +32,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if(user != null) {
         await secureStorageRepository.write(key: "CURRENT_USER", value: user.toJson());
-        emit(Authenticated(userModel: user));
+        emit(Authenticated(userModel: user, message: "Congratulations, you managed to register"));
       } else {
-        emit(AuthErrorState(errorMessage: "Ops, aconteceu algum erro ao se logar"));
+        emit(AuthErrorState(errorMessage: "Error when using login"));
       }
     } catch(error) {
-      emit(AuthErrorState(errorMessage: "Ops, aconteceu algum erro ao se logar: $error"));
+      emit(AuthErrorState(errorMessage: "Error when using login: $error"));
       emit(UnAuthenticated());
     }
   }
@@ -55,12 +55,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       if(user != null) {
         await secureStorageRepository.write(key: "CURRENT_USER", value: user.toJson());
-        emit(Authenticated(userModel: user));
+        emit(Authenticated(userModel: user, message: "Congratulations, you managed to register"));
       } else {
-        emit(AuthErrorState(errorMessage: "Ops, aconteceu algum erro ao se cadastrar"));
+        emit(AuthErrorState(errorMessage: "Error when registering"));
       }
     } catch(error) {
-      emit(AuthErrorState(errorMessage: "Ops, aconteceu algum erro ao se cadastrar: $error"));
+      emit(AuthErrorState(errorMessage: "Error when registering: $error"));
       emit(UnAuthenticated());
     }
   }
@@ -76,5 +76,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } catch(error) {
       emit(AuthErrorState(errorMessage: "Ops aconteceu algo ao sair: $error"));
     }
+  }
+
+  Future<void> _navigateSignInView(SignInViewEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoadingState());
+    emit(SignInViewState());
+  }
+
+  Future<void> _navigateSignUpView(SignUpViewEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoadingState());
+    // Future.delayed(const Duration(microseconds: 200));
+    emit(SignUpViewState());
   }
 }
