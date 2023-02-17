@@ -20,6 +20,9 @@ void main() async {
                 create: (context) => AppStartedBloc(
                     const SecureStorageRepository(),
                     AuthServiceImplement())..add(AppInitialEvent())),
+            BlocProvider<NetworkConnectionBloc>(
+                create: (context) => NetworkConnectionBloc()..add(ObserveNetworkConnection())
+            ),
             BlocProvider<AuthBloc>(
                 create: (context) => AuthBloc(
                     authServiceHelper: AuthServiceImplement(),
