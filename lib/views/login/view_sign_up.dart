@@ -40,7 +40,7 @@ class _ViewSignUpState extends State<ViewSignUp> {
                     _nameController.text = value!;
 
                     if(_nameController.text.isEmpty) {
-                      return "O campo não pode ser nulo";
+                      return "Field cannot be null";
                     }
                     return null;
                   }
@@ -55,7 +55,7 @@ class _ViewSignUpState extends State<ViewSignUp> {
                     _emailController.text = value!;
 
                     if(_emailController.text.isEmpty) {
-                      return "O campo não pode ser nulo";
+                      return "Field cannot be null";
                     }
                     return null;
                   }
@@ -70,10 +70,10 @@ class _ViewSignUpState extends State<ViewSignUp> {
                     _passwordController.text = value!;
 
                     if(_passwordController.text.isEmpty) {
-                      return "O campo não pode ser nulo";
+                      return "Field cannot be null";
 
                     } else if(_passwordController.text.length <= 4) {
-                      return "O campo está incorreto";
+                      return "The field is incorrect";
 
                     }
                     return null;
@@ -89,7 +89,7 @@ class _ViewSignUpState extends State<ViewSignUp> {
                     _confirmPasswordController.text = value!;
 
                     if(_confirmPasswordController.text != _passwordController.text) {
-                      return "Os campos de senha estao errados";
+                      return "Password fields are not identical";
                     }
                     return null;
                   }
@@ -141,31 +141,6 @@ class _ViewSignUpState extends State<ViewSignUp> {
     super.dispose();
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //
-  //   final bloc = BlocProvider.of<AuthBloc>(context);
-  //
-  //   return BlocConsumer(
-  //       bloc: bloc,
-  //       listener: (context, state) {
-  //          if(state is SignUpErrorState) {
-  //           _message(message: state.message, checkMessage: 2);
-  //         }
-  //       },
-  //       builder: (context, state) {
-  //         if(state is SignUpLoadingState) {
-  //           return const Scaffold(body: Center(child: CircularProgressIndicator(),),);
-  //
-  //         } else if(state is SignUpSuccessState) {
-  //           return const ViewSplash();
-  //
-  //         }
-  //         return _body(bloc);
-  //       }
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
 
@@ -173,17 +148,7 @@ class _ViewSignUpState extends State<ViewSignUp> {
 
     return BlocBuilder(
         bloc: bloc,
-        builder: (context, state) {
-          // if(state is SignUpLoadingState) {
-          //   return const Scaffold(body: Center(child: CircularProgressIndicator(),),);
-          //
-          // } else if(state is SignUpSuccessState) {
-          //   return const ViewSplash();
-          //
-          // }
-          return _body(bloc);
-        }
-    );
+        builder: (context, state) => _body(bloc));
   }
 
   void _registerForm(AuthBloc bloc) {

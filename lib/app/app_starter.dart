@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/bloc.dart';
+import '../extensions/extensions.dart';
 import '../views/views.dart';
 
-class MyHome extends StatefulWidget {
-  const MyHome({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
-  State<MyHome> createState() => _MyHomeState();
+  State<App> createState() => _AppState();
 }
 
-class _MyHomeState extends State<MyHome> {
+class _AppState extends State<App> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) => DeviceSizeData.init(context));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +29,7 @@ class _MyHomeState extends State<MyHome> {
         builder: (context, state) {
 
           if(state is AppSuccessState) {
-            // userModel = state.userModel;
-            return const ViewHome();
+            return const View();
 
           } else if(state is Loading) {
             return const Scaffold(

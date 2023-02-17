@@ -1,18 +1,21 @@
 import 'package:example_financy/bloc/bloc.dart';
-import 'package:example_financy/services/secure_storage_service.dart';
+import 'package:example_financy/repositories/repositories.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../services/services.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final AuthServiceHelper authServiceHelper;
+  final SecureStorageRepository secureStorageRepository;
 
-  AuthBloc({required this.authServiceHelper}) : super(UnAuthenticated()) {
-
+  AuthBloc({
+    required this.authServiceHelper,
+    required this.secureStorageRepository
+  }) : super(UnAuthenticated()) {
 
     on<SignInRequestedEvent>((event, emit) => _signIn(event, emit));
     on<SignUpRequestedEvent>((event, emit) => _signUp(event, emit));
-    // on<SignOut>((event, emit) => _signOut(event, emit));
+    on<SignOutEvent>((event, emit) => _signOut(event, emit));
     on<SignInViewEvent>((event, emit) => emit(SignInViewState()));
     on<SignUpViewEvent>((event, emit) => emit(SignUpViewState()));
   }
@@ -22,11 +25,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
 
     try {
-      const secureStorage = SecureStorageService();
-      final user = await authServiceHelper.signIn(email: event.email, password: event.password);
+      final user = await authServiceHelper.signIn(
+          email: event.email,
+          password: event.password
+      );
 
       if(user != null) {
-        await secureStorage.write(key: "CURRENT_USER", value: user.toJson());
+        await secureStorageRepository.write(key: "CURRENT_USER", value: user.toJson());
         emit(Authenticated(userModel: user));
       } else {
         emit(AuthErrorState(errorMessage: "Ops, aconteceu algum erro ao se logar"));
@@ -42,7 +47,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
 
     try {
-      const secureStorage = SecureStorageService();
       final user = await authServiceHelper.signUp(
           name: event.name,
           email: event.email,
@@ -50,7 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
 
       if(user != null) {
-        await secureStorage.write(key: "CURRENT_USER", value: user.toJson());
+        await secureStorageRepository.write(key: "CURRENT_USER", value: user.toJson());
         emit(Authenticated(userModel: user));
       } else {
         emit(AuthErrorState(errorMessage: "Ops, aconteceu algum erro ao se cadastrar"));
@@ -61,16 +65,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _signOut(SignOut event, Emitter<AuthState> emit) async {
+  Future<void> _signOut(SignOutEvent event, Emitter<AuthState> emit) async {
 
     emit(AuthLoadingState());
 
     try {
       await authServiceHelper.signOut();
-      const secureStorage = SecureStorageService();
-      await secureStorage.deleteOne(key: "CURRENT_USER");
+      await secureStorageRepository.deleteOne(key: "CURRENT_USER");
       emit(UnAuthenticated());
-      // emit.call(StorageInitialState());
     } catch(error) {
       emit(AuthErrorState(errorMessage: "Ops aconteceu algo ao sair: $error"));
     }

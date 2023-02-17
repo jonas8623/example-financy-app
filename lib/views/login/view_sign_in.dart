@@ -36,7 +36,7 @@ class _ViewSignInState extends State<ViewSignIn> {
                       _emailController.text = value!;
 
                       if(_emailController.text.isEmpty) {
-                        return "O campo não pode ser nulo";
+                        return "Field cannot be null";
                       }
                       return null;
                     }
@@ -50,10 +50,10 @@ class _ViewSignInState extends State<ViewSignIn> {
                       _passwordController.text = value!;
 
                       if(_passwordController.text.isEmpty) {
-                        return "O campo não pode ser nulo";
+                        return "Field cannot be null";
 
                       } else if(_passwordController.text.length <= 4) {
-                        return "O campo está incorreto";
+                        return "Password fields are not identical";
 
                       }
                       return null;
@@ -123,7 +123,6 @@ class _ViewSignInState extends State<ViewSignIn> {
     if(_formKey.currentState!.validate()) {
 
       bloc.add(SignInRequestedEvent(
-        // name: _nameController.text,
         email: _emailController.text,
         password: _passwordController.text,
         // confirmPassword: _confirmPasswordController.text

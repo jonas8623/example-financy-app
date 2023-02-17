@@ -1,5 +1,5 @@
-import 'package:example_financy/home/my_home.dart';
 import 'package:flutter/material.dart';
+import 'app/app_starter.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.green,
           primaryColor: const Color(0xFF438883),
         ),
-        home: const MyHome(),
+        home: const App(),
     );
   }
 }
