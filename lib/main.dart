@@ -20,13 +20,17 @@ void main() async {
                     const SecureStorageRepository(),
                     AuthServiceImplement())..add(AppInitialEvent())),
             BlocProvider<NetworkConnectionBloc>(
-                create: (context) => NetworkConnectionBloc()..add(ObserveNetworkConnection())
-            ),
+                create: (context) => NetworkConnectionBloc()..add(ObserveNetworkConnection()
+                )),
             BlocProvider<AuthBloc>(
                 create: (context) => AuthBloc(
                     authServiceHelper: AuthServiceImplement(),
                     secureStorageRepository: const SecureStorageRepository()
-                ))
+                )),
+            BlocProvider<TransactionBloc>(
+                create: (context) => TransactionBloc(
+                    transactionRepository: TransactionRepositoryImplement()
+                )..add(LoadTransactionEvent()))
           ],
           child: const MyApp()),
     )

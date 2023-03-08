@@ -85,7 +85,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _navigateSignUpView(SignUpViewEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoadingState());
-    // Future.delayed(const Duration(microseconds: 200));
     emit(SignUpViewState());
   }
 }
